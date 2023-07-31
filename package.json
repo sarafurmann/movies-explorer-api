@@ -8,7 +8,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint .",
     "start": "node --es-module-specifier-resolution=node ./app.js",
-    "dev": "nodemon --es-module-specifier-resolution=node ./app.js"
+    "dev": "nodemon --es-module-specifier-resolution=node ./app.js",
+    "start:prod": "pm2 start --node-args='--es-module-specifier-resolution=node' app.js",
+    "restart:prod": "pm2 restart app"
   },
   "keywords": [],
   "author": "Sara Furmanova",

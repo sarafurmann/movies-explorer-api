@@ -25,7 +25,7 @@ app.use(requestLogger);
 
 mongoose.connect(DB_URI);
 
-app.use('/', router);
+app.use('/', auth, router);
 app.post(
   '/signin',
   celebrate({

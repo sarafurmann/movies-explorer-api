@@ -3,9 +3,9 @@ import { Router } from 'express';
 import movieRouter from './movies';
 import userRouter from './users';
 
-const router = Router()
+const router = Router();
 
-router.use('/movies', movieRouter)
-router.use('/users', userRouter)
+router.use('/movies', movieRouter);
+router.use('/users', userRouter);
 
-export default router
+export default router;

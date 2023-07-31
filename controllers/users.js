@@ -27,13 +27,13 @@ export const createUser = async (req, res, next) => {
   try {
     const {
       body: {
-        name, about, avatar, email, password,
+        name, email, password,
       },
     } = req;
 
     const hash = await bcrypt.hash(password, 10);
     const user = await User.create({
-      name, about, avatar, password: hash, email,
+      name, password: hash, email,
     });
 
     res.send({
@@ -63,16 +63,21 @@ export const createUser = async (req, res, next) => {
 export const editUser = async (req, res, next) => {
   try {
     const { user: { _id } } = req;
-    const { body: { name, about } } = req;
+    const { body: { name, email } } = req;
     const user = await User.findByIdAndUpdate(
       _id,
-      { name, about },
+      { name, email },
       { new: true, runValidators: true },
     );
     res.send({ data: user });
   } catch (err) {
     if (err.name === 'ValidationError') {
       next(new BadRequestError('Bad request error'));
+      return;
+    }
+
+    if (err.code === 11000) {
+      next(new ConflictError('Conflict error'));
       return;
     }
 

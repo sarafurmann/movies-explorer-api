@@ -4,19 +4,18 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import { errors, celebrate, Joi } from 'celebrate';
-import movieRouter from './routes/movies';
-import userRouter from './routes/users';
+import router from './routes';
 import auth from './middlewares/auth';
 import { login, createUser } from './controllers/users';
 import NotFoundError from './errors/not-found-error';
 import { requestLogger, errorLogger } from './middlewares/logger';
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3000, DB_URI, ALLOWED_HOSTS } = process.env;
 
 const app = express();
 
 app.use(cors({
-  origin: 'https://movies-explorer-sara.nomoreparties.sbs',
+  origin: ALLOWED_HOSTS.split(','),
   optionsSuccessStatus: 200,
 }));
 app.use(express.json());
@@ -24,10 +23,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(requestLogger);
 
-mongoose.connect('mongodb://127.0.0.1:27017/bitfilmsdb');
+mongoose.connect(DB_URI);
 
-app.use('/movies', auth, movieRouter);
-app.use('/users', auth, userRouter);
+app.use('/', router);
 app.post(
   '/signin',
   celebrate({
@@ -49,12 +47,6 @@ app.post(
   }),
   createUser,
 );
-
-app.get('/crash-test', () => {
-  setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
-  }, 0);
-});
 
 app.use((req, res, next) => {
   next(new NotFoundError('Страницы по запрошенному URL не существует'));

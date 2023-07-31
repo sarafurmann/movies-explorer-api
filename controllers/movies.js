@@ -5,7 +5,8 @@ import NotFoundError from '../errors/not-found-error';
 import ForbiddenError from '../errors/forbidden-error';
 
 export const getMovies = async (req, res) => {
-  const movies = await Movie.find({});
+  const { user: { _id } } = req;
+  const movies = await Movie.find({ owner: _id });
   res.send({ data: movies });
 };
 

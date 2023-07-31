@@ -5,7 +5,6 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import { errors, celebrate, Joi } from 'celebrate';
 import router from './routes';
-import auth from './middlewares/auth';
 import { login, createUser } from './controllers/users';
 import NotFoundError from './errors/not-found-error';
 import { requestLogger, errorLogger } from './middlewares/logger';
@@ -25,7 +24,7 @@ app.use(requestLogger);
 
 mongoose.connect(DB_URI);
 
-app.use('/', auth, router);
+app.use('/', router);
 app.post(
   '/signin',
   celebrate({

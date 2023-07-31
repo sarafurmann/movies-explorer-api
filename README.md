@@ -12,3 +12,7 @@
 
 `npm run start` — запускает сервер  
 `npm run dev` — запускает сервер с hot-reload
+
+##
+
+API-URL = https://api.movies-explorer-sara.nomoreparties.sbs

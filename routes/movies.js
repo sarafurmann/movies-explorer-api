@@ -22,7 +22,6 @@ router.post(
       director: Joi.string().required(),
       duration: Joi.number().integer().required(),
       country: Joi.string().required(),
-      owner: Joi.string().length(24).hex().required(),
     }),
   }),
   createMovie,

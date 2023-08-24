@@ -13,9 +13,9 @@ export const getMovies = async (req, res) => {
 export const createMovie = async (req, res, next) => {
   try {
     const { user: { _id } } = req;
-    const { body: { name, link } } = req;
+    const { body } = req;
 
-    const movie = await Movie.create({ name, link, owner: _id });
+    const movie = await Movie.create({ ...body, owner: _id });
 
     res.send({ data: movie });
   } catch (err) {
